@@ -18,6 +18,13 @@ typedef struct {
     Stack pilha;
 } Tubo;
 
+
+void iniciar_vazias(Tubo T[]){
+
+
+    for (int i=1 ; i<=(TAM-1) ; i++);
+};
+
 int main(){
     Tubo T [TAM];
     int repetir = 1, retorno;
