@@ -20,12 +20,37 @@ void distribuir(Tubo T[]){
 
     srand(time(0));
 
-    for(int i=0 ; i<=(TAM-1) ; i++){
-        num = (rand()%(TAM-1)) + 1;
-        push(T[i].pilha, num);
+    for(int i=0 ; i<(TAM-1) ; i++){
+        
+        for(int j=0 ; j<(TAM-1) ; j++){
+
+            num = (rand()%(TAM-1)) + 1;
+            push(T[i].pilha, num);
+
+        }
     }
 }
 
+void mostrar (Tubo T[]){
+    Tubo T_aux[TAM];
+    stack_element v;
+        
+    for (int i=0 ; i<(TAM) ; i++){
+
+        for (int j=0 ; j<(TAM-1) ; j++){ 
+            v = pop(T[j].pilha);
+            if (v){
+                cout<<"|"<<v<<"|  ";
+            }else{
+                cout<<"| | ";
+            }
+            
+        }
+        cout<<"\n";
+
+    }
+
+}
 void mudacor(int cor) {
     /*
     0 = Preto           8 = Cinza
@@ -62,10 +87,11 @@ int main(){
 
     distribuir(T);
 
-    v = pop(T[0].pilha);
+    mostrar(T); 
 
-    cout<<"\nimprimindo valor";
-    cout<<v;
+    //v = pop(T[0].pilha);
+
+
 
 
     /*
