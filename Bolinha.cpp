@@ -15,12 +15,16 @@ typedef struct {
     Stack pilha;
 } Tubo;
 
+void distribuir(Tubo T[]){
+    int num ;
 
-void iniciar_vazias(Tubo T[]){
+    srand(time(0));
 
-
-    for (int i=1 ; i<=(TAM-1) ; i++);
-};
+    for(int i=0 ; i<=(TAM-1) ; i++){
+        num = (rand()%(TAM-1)) + 1;
+        push(T[i].pilha, num);
+    }
+}
 
 void mudacor(int cor) {
     /*
@@ -52,6 +56,20 @@ void iniciar_vazias(Tubo T[]) {
 
 int main(){
     Tubo T [TAM];
+    stack_element v;
+
+    iniciar_vazias(T);
+
+    distribuir(T);
+
+    v = pop(T[0].pilha);
+
+    cout<<"\nimprimindo valor";
+    cout<<v;
+
+
+    /*
+    Tubo T [TAM];
     int repetir = 1, retorno;
     do{
         iniciar_vazias(T);
@@ -67,5 +85,5 @@ int main(){
         cout<<"\n Jogar Novamente? 1(sim) ou 0(nao): ";cin>> repetir;
     }while(repetir);
     cout<<"Fim do JOGO"<<endl;
-    return;
+    return;*/
 }
