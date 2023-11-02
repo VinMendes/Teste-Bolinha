@@ -15,19 +15,25 @@ typedef struct {
     Stack pilha;
 } Tubo;
 
-void distribuir(Tubo T[]){
-    int num ;
 
+void distribuir(Tubo T[]){
+    int num, num_elementos;
+    int vetor_freq[(TAM)] = {0};
     srand(time(0));
 
     for(int i=0 ; i<(TAM-1) ; i++){
-        
+        num_elementos = 0;
         for(int j=0 ; j<(TAM-1) ; j++){
+            
+            do{
+                num = (rand()%(TAM-1)) + 1;
+            }while(vetor_freq[num] >= (TAM-1));
 
-            num = (rand()%(TAM-1)) + 1;
+            vetor_freq[num]++;
             push(T[i].pilha, num);
-
+            num_elementos ++;
         }
+        T[i].numero_elementos = num_elementos;
     }
 }
 
@@ -35,7 +41,7 @@ void mostrar (Tubo T[]){
     Tubo T_aux[TAM];
     stack_element v;
         
-    for (int i=0 ; i<(TAM) ; i++){
+    for (int i=0 ; i<(TAM-1) ; i++){
 
         for (int j=0 ; j<(TAM-1) ; j++){ 
             v = pop(T[j].pilha);
@@ -44,12 +50,9 @@ void mostrar (Tubo T[]){
             }else{
                 cout<<"| | ";
             }
-            
         }
         cout<<"\n";
-
     }
-
 }
 void mudacor(int cor) {
     /*
@@ -88,6 +91,7 @@ int main(){
     distribuir(T);
 
     mostrar(T); 
+
 
     //v = pop(T[0].pilha);
 
