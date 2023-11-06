@@ -15,76 +15,13 @@ typedef struct {
     Stack pilha;
 } Tubo;
 
-
-void distribuir(Tubo T[]){
-    int num, num_elementos;
-    int vetor_freq[(TAM)] = {0};
-    srand(time(0));
-
-    for(int i=0 ; i<(TAM-1) ; i++){
-        num_elementos = 0;
-        for(int j=0 ; j<(TAM-1) ; j++){
-            
-            do{
-                num = (rand()%(TAM-1)) + 1;
-            }while(vetor_freq[num] >= (TAM-1));
-
-            vetor_freq[num]++;
-            push(T[i].pilha, num);
-            num_elementos ++;
-        }
-        T[i].numero_elementos = num_elementos;
+void iniciar_vazias(Tubo T[]) {
+    for(int ax=0; ax<TAM; ax++) {
+        initStack(T[ax].pilha);
+        T[ax].numero_elementos=0;
     }
 }
 
-void mostrar (Tubo T[]){
-    Stack P_ax;
-    stack_element v, v2;
-    for (int ax = 0; ax < TAM-1;ax++) {
-        for (int ax2 = 0; ax2 < TAM; ax2++) {
-            if(isEmpty(T[ax2].pilha)) {
-                cout<<"|   | ";
-            }
-            else {
-                v2=pop(T[ax2].pilha);
-                cout<<"| "<<v2<<" | ";
-            }
-        }
-        cout<<endl;
-    }
-}
-
-int validar (Tubo T[], int o, int d) {
-    stack_element v, v2;
-    if (T[d].numero_elementos < TAM && T[o].numero_elementos > 0) {
-        v = pop(T[o].pilha);
-        T[o].numero_elementos--;
-        push(T[d].pilha, v);
-        T[d].numero_elementos++;
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-/*
-int validar_fim(Tubo T[]) {
-    Tubo axi;
-    int vazio;
-    stack_element V, V2;
-    for(int ax = 0; ax <= TAM; ax++) {
-        axi = T[ax];
-        vazio = isEmpty(axi.pilha);
-        if (vazio == 0 && axi.numero_elementos == 5) {
-            V = peek(axi.pilha);
-            for(int ax2 = 0; ax2 )
-            V2 = pop(axi.pilha);
-
-        }
-
-    }
-}
-*/
 void mudacor(int cor) {
     /*
     0 = Preto           8 = Cinza
@@ -109,13 +46,88 @@ void printa_cor(int I) {
     mudacor(15);
 }
 
-void iniciar_vazias(Tubo T[]) {
-    for(int ax=0; ax<TAM; ax++) {
-        initStack(T[ax].pilha);
-        T[ax].numero_elementos=0;
+
+void distribuir(Tubo T[]){
+    int num, num_elementos;
+    int vetor_freq[(TAM)] = {0};
+    srand(time(0));
+
+    for(int i=0 ; i<(TAM-1) ; i++){
+        num_elementos = 0;
+        for(int j=0 ; j<(TAM-1) ; j++){
+            
+            do{
+                num = (rand()%(TAM-1)) + 1;
+            }while(vetor_freq[num] >= (TAM-1));
+
+            vetor_freq[num]++;
+            push(T[i].pilha, num);
+            num_elementos ++;
+        }
+        T[i].numero_elementos = num_elementos;
     }
 }
 
+void mostrar(Tubo T[]) {
+    stack_element V;
+    Tubo T_ax[TAM];
+    iniciar_vazias(T_ax);
+    for (int ax = 5; ax >= 1; ax--) {
+        for (int ax2 = 0; ax2 < TAM; ax2++) {
+            if (T[ax2].numero_elementos == ax) {
+                V = pop(T[ax2].pilha);
+                T[ax2].numero_elementos--;
+                cout<<"| ";
+                printa_cor(V);
+                cout<< " | ";
+                push(T_ax[ax2].pilha, V);
+                T_ax[ax2].numero_elementos++;
+            }
+            else {
+                cout << "|   | ";
+            }
+        }
+        cout<<endl;
+    }
+
+    for (int ax = 5; ax >= 1; ax--) {
+        for (int ax2 = 0; ax2 < TAM; ax2++) {
+            if (T_ax[ax2].numero_elementos == ax) {
+                V = pop(T_ax[ax2].pilha);
+                T_ax[ax2].numero_elementos--;
+                push(T[ax2].pilha, V);
+                T[ax2].numero_elementos++;
+            }
+        }
+        cout<<endl;
+    }
+}
+
+
+int validar (Tubo T[], int o, int d) {
+    stack_element v, v2;
+    if (T[d].numero_elementos < TAM && T[o].numero_elementos > 0) {
+        v = pop(T[o].pilha);
+        T[o].numero_elementos--;
+        push(T[d].pilha, v);
+        T[d].numero_elementos++;
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+/*
+int validar_fim (Tubo T[]) {
+    stack_element V, V_verificador;
+    Tubo T_ax[TAM];
+    for (int ax = 0; ax >= TAM; ax++) {
+        if (T[ax].)
+        V_verificador = peek(T[ax].pilha);
+    }
+    return 1;
+}
+*/
 
 int main(){
     Tubo T [TAM];
@@ -124,10 +136,14 @@ int main(){
     iniciar_vazias(T);
 
     distribuir(T);
-    v = pop(T[2].pilha);
-    T[2].numero_elementos-1;
+    v = pop(T[1].pilha);
+    T[1].numero_elementos--;
+    push(T[5].pilha, v);
+    T[5].numero_elementos++;
     mostrar(T); 
-
+    system("Pause");
+    system("Cls");
+    mostrar(T);
 
     //v = pop(T[0].pilha);
 
