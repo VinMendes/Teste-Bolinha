@@ -118,24 +118,42 @@ int validar (Tubo T[], int o, int d) {
     }
 }
 
-int validar_fim (Tubo T[]) {
-    stack_element V, V_verificador;
-    Tubo T_ax[TAM];
-    for (int ax = 0; ax != TAM; ax++) {
-        if (T[ax].numero_elementos == 5) {
-            V_verificador=peek(T[ax].pilha);
-            for (int ax2 = 0; ax2 < 5;ax2++) {
-                V = pop(T[ax].pilha);
-                T[ax].numero_elementos--;
-                if (V != V_verificador) {
-                    return 0;
+
+int validar_fim(Tubo T[]) {
+    Tubo T_aux[TAM];
+    iniciar_vazias(T_aux);
+    stack_element v, v_ax;
+    int retornar = 0;
+    for(int ax = 0; ax < TAM; ax++) {
+        if(T[ax].numero_elementos == 5 || T[ax].numero_elementos == 0) {
+            if (T[ax].numero_elementos == 5) {
+                v_ax=peek(T[ax].pilha);
+                for(int ax2 = 5; ax2 > 0; ax2--) {
+                    v=pop(T[ax].pilha);
+                    T[ax].numero_elementos--;
+                    push(T_aux[ax].pilha, v);
+                    T_aux[ax].numero_elementos++;
+                    if(v_ax != v) {
+                        retornar = 1;
+                    }
                 }
             }
         }
-        else if (T[ax].numero_elementos != 5 || T[ax].numero_elementos != 0); {
-            return 0;
+        else {
+            retornar = 1;
         }
     }
+    for(int ax = 0; ax < TAM; ax++) {
+        if(T_aux[ax].numero_elementos > 0) {
+            for (int ax2 = T_aux[ax].numero_elementos; ax2 < TAM; ax2++) {
+                v = pop(T_aux[ax].pilha);
+                T_aux[ax].numero_elementos--;
+                push(T[ax].pilha, v);
+                T[ax].numero_elementos++;
+            }
+        }
+    }
+    return retornar;
 }
 
 int main(){
