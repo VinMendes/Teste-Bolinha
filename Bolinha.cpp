@@ -117,17 +117,26 @@ int validar (Tubo T[], int o, int d) {
         return 0;
     }
 }
-/*
+
 int validar_fim (Tubo T[]) {
     stack_element V, V_verificador;
     Tubo T_ax[TAM];
-    for (int ax = 0; ax >= TAM; ax++) {
-        if (T[ax].)
-        V_verificador = peek(T[ax].pilha);
+    for (int ax = 0; ax != TAM; ax++) {
+        if (T[ax].numero_elementos == 5) {
+            V_verificador=peek(T[ax].pilha);
+            for (int ax2 = 0; ax2 < 5;ax2++) {
+                V = pop(T[ax].pilha);
+                T[ax].numero_elementos--;
+                if (V != V_verificador) {
+                    return 0;
+                }
+            }
+        }
+        else if (T[ax].numero_elementos != 5 || T[ax].numero_elementos != 0); {
+            return 0;
+        }
     }
-    return 1;
 }
-*/
 
 int main(){
     Tubo T [TAM];
