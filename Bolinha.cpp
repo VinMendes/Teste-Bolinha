@@ -105,15 +105,21 @@ void mostrar(Tubo T[]) {
 
 
 int validar (Tubo T[], int o, int d) {
-    stack_element v, v2;
-    if (T[d].numero_elementos < TAM && T[o].numero_elementos > 0) {
-        v = pop(T[o].pilha);
-        T[o].numero_elementos--;
-        push(T[d].pilha, v);
-        T[d].numero_elementos++;
+    stack_element v;
+
+    cout<<"\nRecebidos na validar:\n";
+    cout<<"numero de elementos:";
+    cout<<T[o].numero_elementos;
+    cout<<endl;
+    cout<<"numero de elementos:";
+    cout<<T[d].numero_elementos;
+    cout<<endl;
+    if (T[o].numero_elementos > 0 && T[d].numero_elementos < TAM) {
+        cout<<"\n*validacao ok\n";
         return 1;
     }
     else {
+        cout<<"\n*validacao nok\n";
         return 0;
     }
 }
@@ -156,12 +162,48 @@ int validar_fim(Tubo T[]) {
     return retornar;
 }
 
+int jogada(Tubo T[]){
+    stack_element v;
+    int O, D;
+    int fim = 1;
+    int jogada_validada = 0;
+    
+    do{
+
+        do{
+            cout<<"ORIGEM <1 a 6 (-1 para sair)>: ";
+            cin>>O;
+        }while(O < 0 || O > 5);
+
+        do{
+            cout<<"DESTINO <1 a 6 (-1 para sair)>: ";
+            cin>>D;
+        }while(O < 0 || O > 5);
+        jogada_validada = validar(T, O, D);
+
+        if(jogada_validada){
+            v = pop(T[O].pilha);
+            T[O].numero_elementos--;
+            push(T[D].pilha, v);
+            T[D].numero_elementos++;
+        }
+
+    }while(jogada_validada == 0);
+
+    
+    //fim = validar_fim(T);
+    return fim;
+
+};
+
+
 int main(){
     Tubo T [TAM];
     stack_element v;
+    int repetir = 1, retorno;
 
+    /*
     iniciar_vazias(T);
-
     distribuir(T);
     v = pop(T[1].pilha);
     T[1].numero_elementos--;
@@ -171,8 +213,23 @@ int main(){
     system("Pause");
     system("Cls");
     mostrar(T);
-
-    //v = pop(T[0].pilha);
+*/
+    do{
+        iniciar_vazias(T);
+        distribuir(T);
+        mostrar(T);
+        do{
+            retorno = jogada(T);
+            system("Cls");
+            mostrar(T);
+            if(retorno == 0)break;
+        }while(retorno);
+        mostrar(T);
+        cout<<"\n P A R A B E N S ! ! !";
+        cout<<"\n Jogar Novamente? 1(sim) ou 0(nao): ";cin>> repetir;
+    }while(repetir);
+    cout<<"Fim do JOGO"<<endl;
+    return 0;
 
 
 
