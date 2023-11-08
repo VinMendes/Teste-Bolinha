@@ -89,7 +89,13 @@ void mostrar(Tubo T[]) {
         }
         cout<<endl;
     }
-
+    for (int ax = 0; ax < TAM; ax++) {
+        cout<<"-----"<<" ";
+    }
+    cout<<endl;
+    for (int ax = 0; ax < TAM; ax++) {
+        cout<<"  "<<ax+1<<"  "<<" ";
+    }
     for (int ax = 5; ax >= 1; ax--) {
         for (int ax2 = 0; ax2 < TAM; ax2++) {
             if (T_ax[ax2].numero_elementos == ax) {
@@ -105,21 +111,12 @@ void mostrar(Tubo T[]) {
 
 
 int validar (Tubo T[], int o, int d) {
-    stack_element v;
-
-    cout<<"\nRecebidos na validar:\n";
-    cout<<"numero de elementos:";
-    cout<<T[o].numero_elementos;
-    cout<<endl;
-    cout<<"numero de elementos:";
-    cout<<T[d].numero_elementos;
-    cout<<endl;
-    if (T[o].numero_elementos > 0 && T[d].numero_elementos < TAM) {
+    if (T[o].numero_elementos > 0 && T[d].numero_elementos < TAM-1) {
         cout<<"\n*validacao ok\n";
         return 1;
     }
     else {
-        cout<<"\n*validacao nok\n";
+        cout<<"\nError pilha cheia ou nao contem elementos\n\n";
         return 0;
     }
 }
@@ -151,7 +148,7 @@ int validar_fim(Tubo T[]) {
     }
     for(int ax = 0; ax < TAM; ax++) {
         if(T_aux[ax].numero_elementos > 0) {
-            for (int ax2 = T_aux[ax].numero_elementos; ax2 < TAM; ax2++) {
+            for (int ax2 = T_aux[ax].numero_elementos; ax2 > 0; ax2--) {
                 v = pop(T_aux[ax].pilha);
                 T_aux[ax].numero_elementos--;
                 push(T[ax].pilha, v);
@@ -159,6 +156,7 @@ int validar_fim(Tubo T[]) {
             }
         }
     }
+
     return retornar;
 }
 
@@ -173,15 +171,23 @@ int jogada(Tubo T[]){
         do{
             cout<<"ORIGEM <1 a 6 (-1 para sair)>: ";
             cin>>O;
-        }while(O < 0 || O > 5);
+            if(O == -1) {
+                exit(0);
+            }
+            O--;
+        }while(O < 0 || O > 6);
 
         do{
             cout<<"DESTINO <1 a 6 (-1 para sair)>: ";
             cin>>D;
-        }while(O < 0 || O > 5);
+            if(D == -1) {
+                exit(0);
+            }
+            D--;
+        }while(O < 0 || O > 6);
         jogada_validada = validar(T, O, D);
 
-        if(jogada_validada){
+        if(jogada_validada == 1){
             v = pop(T[O].pilha);
             T[O].numero_elementos--;
             push(T[D].pilha, v);
@@ -191,9 +197,10 @@ int jogada(Tubo T[]){
     }while(jogada_validada == 0);
 
     
-    //fim = validar_fim(T);
-    return fim;
+    fim = validar_fim(T);
 
+
+    return fim;
 };
 
 
