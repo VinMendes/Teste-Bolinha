@@ -112,11 +112,9 @@ void mostrar(Tubo T[]) {
 
 int validar (Tubo T[], int o, int d) {
     if (T[o].numero_elementos > 0 && T[d].numero_elementos < TAM-1) {
-        cout<<"\n*validacao ok\n";
         return 1;
     }
     else {
-        cout<<"\nError pilha cheia ou nao contem elementos\n\n";
         return 0;
     }
 }
@@ -175,7 +173,7 @@ int jogada(Tubo T[]){
                 exit(0);
             }
             O--;
-        }while(O < 0 || O > 6);
+        }while(O < 0 || O > 5);
 
         do{
             cout<<"DESTINO <1 a 6 (-1 para sair)>: ";
@@ -184,7 +182,7 @@ int jogada(Tubo T[]){
                 exit(0);
             }
             D--;
-        }while(O < 0 || O > 6);
+        }while(D < 0 || D > 5);
         jogada_validada = validar(T, O, D);
 
         if(jogada_validada == 1){
@@ -192,6 +190,13 @@ int jogada(Tubo T[]){
             T[O].numero_elementos--;
             push(T[D].pilha, v);
             T[D].numero_elementos++;
+            system("cls");
+        }
+        if(jogada_validada == 0) {
+            cout<<"Jogada invalida\n\n";
+            system("pause");
+            system("cls");
+            mostrar(T);
         }
 
     }while(jogada_validada == 0);
@@ -206,57 +211,20 @@ int jogada(Tubo T[]){
 
 int main(){
     Tubo T [TAM];
-    stack_element v;
     int repetir = 1, retorno;
-
-    /*
-    iniciar_vazias(T);
-    distribuir(T);
-    v = pop(T[1].pilha);
-    T[1].numero_elementos--;
-    push(T[5].pilha, v);
-    T[5].numero_elementos++;
-    mostrar(T); 
-    system("Pause");
-    system("Cls");
-    mostrar(T);
-*/
     do{
         iniciar_vazias(T);
         distribuir(T);
         mostrar(T);
         do{
             retorno = jogada(T);
-            system("Cls");
             mostrar(T);
             if(retorno == 0)break;
         }while(retorno);
         mostrar(T);
         cout<<"\n P A R A B E N S ! ! !";
-        cout<<"\n Jogar Novamente? 1(sim) ou 0(nao): ";cin>> repetir;
+        cout<<"\n Jogar Novamente? 1 (sim) ou 0 (nao): ";cin>> repetir;
     }while(repetir);
     cout<<"Fim do JOGO"<<endl;
     return 0;
-
-
-
-
-    /*
-    Tubo T [TAM];
-    int repetir = 1, retorno;
-    do{
-        iniciar_vazias(T);
-        distribuir(T);
-        mostrar(T);
-        do{
-            retorno = jogada(T);
-            mostrar(T);
-            if(retorno == 0)break;
-        }while(retorno);
-        mostrar(T);
-        cout<<"\n P A R A B E N S ! ! !";
-        cout<<"\n Jogar Novamente? 1(sim) ou 0(nao): ";cin>> repetir;
-    }while(repetir);
-    cout<<"Fim do JOGO"<<endl;
-    return;*/
 }
