@@ -119,6 +119,28 @@ int validar (Tubo T[], int o, int d) {
     }
 }
 
+int validar_dificil (Tubo T[], int o, int d) {
+    stack_element v1 = peek(T[o].pilha);
+    stack_element v2;
+    if (T[d].numero_elementos > 0) {
+        v2 = peek(T[d].pilha); 
+    }
+    if (T[o].numero_elementos > 0 && T[d].numero_elementos < TAM-1) {
+        if(T[d].numero_elementos == 0) {
+            return 1;
+        }
+        else if(v1 == v2) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+    else {
+        return 0;
+    }
+}
+
 
 int validar_fim(Tubo T[]) {
     Tubo T_aux[TAM];
@@ -163,14 +185,13 @@ int jogada(Tubo T[]){
     int O, D;
     int fim = 1;
     int jogada_validada = 0;
-    
     do{
 
         do{
             cout<<"ORIGEM <1 a 6 (-1 para sair)>: ";
             cin>>O;
             if(O == -1) {
-                exit(0);
+                return -1;
             }
             O--;
         }while(O < 0 || O > 5);
@@ -179,7 +200,7 @@ int jogada(Tubo T[]){
             cout<<"DESTINO <1 a 6 (-1 para sair)>: ";
             cin>>D;
             if(D == -1) {
-                exit(0);
+                return -1;
             }
             D--;
         }while(D < 0 || D > 5);
@@ -208,9 +229,68 @@ int jogada(Tubo T[]){
     return fim;
 };
 
+int jogada_dificil(Tubo T[]){
+    stack_element v;
+    int O, D;
+    int fim = 1;
+    int jogada_validada = 0;
+    do{
 
-int main(){
-    Tubo T [TAM];
+        do{
+            cout<<"ORIGEM <1 a 6 (-1 para sair)>: ";
+            cin>>O;
+            if(O == -1) {
+                return -1;
+            }
+            O--;
+        }while(O < 0 || O > 5);
+
+        do{
+            cout<<"DESTINO <1 a 6 (-1 para sair)>: ";
+            cin>>D;
+            if(D == -1) {
+                return -1;
+            }
+            D--;
+        }while(D < 0 || D > 5);
+        jogada_validada = validar_dificil(T, O, D);
+
+        if(jogada_validada == 1){
+            v = pop(T[O].pilha);
+            T[O].numero_elementos--;
+            push(T[D].pilha, v);
+            T[D].numero_elementos++;
+            system("cls");
+        }
+        if(jogada_validada == 0) {
+            cout<<"Jogada invalida\n\n";
+            system("pause");
+            system("cls");
+            mostrar(T);
+        }
+
+    }while(jogada_validada == 0);
+
+    
+    fim = validar_fim(T);
+
+
+    return fim;
+};
+
+int menu() {
+    int opcao;
+    do {
+        system("cls");
+        cout<<"Jogo da Bolinha\n\n";
+        cout<<"1- Modo Facil \n2- Modo Dificil \n3- Sair";
+        cout<<"\n\nQual modo deseja jogar: ";
+        cin>>opcao;
+    }while(opcao < 1 || opcao > 3);
+    return opcao;
+}
+
+void facil(Tubo T[]) {
     int repetir = 1, retorno;
     do{
         iniciar_vazias(T);
@@ -220,12 +300,67 @@ int main(){
             retorno = jogada(T);
             mostrar(T);
             if(retorno == 0)break;
-        }while(retorno);
+            if(retorno == -1)break;
+        }while(retorno != 0 || retorno != -1);
         system("cls");
+        if(retorno == 0) {
+            mostrar(T);
+            cout<<"\n P A R A B E N S ! ! !";
+        }
+        else {
+            cout<<"Nao foi desta vez";
+        }
+        cout<<"\n Jogar Novamente? 1 (sim) ou 0 (nao): ";cin>> repetir;
+        system("cls");
+    }while(repetir);
+    cout<<"Fim do JOGO"<<endl;
+}
+
+void dificil(Tubo T[]) {
+    int repetir = 1, retorno;
+    do{
+        iniciar_vazias(T);
+        distribuir(T);
         mostrar(T);
-        cout<<"\n P A R A B E N S ! ! !";
+        do{
+            retorno = jogada_dificil(T);
+            mostrar(T);
+            if(retorno == 0)break;
+            if(retorno == -1)break;
+        }while(retorno != 0 || retorno != -1);
+        system("cls");
+        if(retorno == 0) {
+            mostrar(T);
+            cout<<"\n P A R A B E N S ! ! !";
+        }
+        else {
+            cout<<"Nao foi desta vez";
+        }
         cout<<"\n Jogar Novamente? 1 (sim) ou 0 (nao): ";cin>> repetir;
     }while(repetir);
     cout<<"Fim do JOGO"<<endl;
-    return 0;
+}
+
+int main() {
+    Tubo T[TAM];
+    int opcao;
+    do {
+        opcao=menu();
+        switch (opcao)
+        {
+        case 1:
+            system("cls");
+            facil(T);
+            break;
+        
+        case 2:
+            system("cls");
+            dificil(T);
+            break;
+        case 3:
+            system("cls");
+            cout<<"Obrigado por jogar nosso jogo";
+            break;
+        }
+    }while(opcao!= 3);
 }
