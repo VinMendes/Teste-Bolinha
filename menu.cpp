@@ -3,6 +3,14 @@
 #include <iomanip>
 #include <math.h>
 #include <windows.h>
+#include <sys\timeb.h>//teste tempo
+typedef struct {//teste tempo
+    char apelido[10];//teste tempo
+    int tempo;//teste tempo
+}jogador;//teste tempo
+typedef jogador elemento_lista;//teste tempo
+#include "listaligada.h"//teste tempo
+
 
 #define TAM 6
 using namespace std;
@@ -290,12 +298,61 @@ int menu() {
     return opcao;
 }
 
-void facil(Tubo T[]) {
+//teste tempo
+void gravar_recordes(Lista& l, int tempo){
+    int c, i = 1;
+    elemento_lista v, v2;
+
+    c = compr(l);
+
+    cin.ignore();
+    cout<<"\nDigite seu apelido: ";
+    cin.getline(v.apelido, 10);
+    v.tempo = tempo;
+
+    if(c == 0){
+        inserir(l, v, i);
+    }else{
+        for (i=1 ; i<=c ; i++){
+            v2 = consultar(l, i);          
+            if(v.tempo < v2.tempo){
+                inserir(l, v, i);
+                return;
+            }
+        }
+        inserir(l, v, i);
+    }
+
+    
+};
+//teste tempo
+void imprimir_recordes(Lista& l){
+    int c = compr(l);
+    elemento_lista v;
+
+    system("cls");
+    cout<<" "<<setw(50)<<"\n*** Melhores jogadores ***\n";
+    cout<<setw(20)<<"JOGADOR"<<setw(10)<<"TEMPO"<<"\n";
+    for (int i=1 ; i<=c ; i++){
+        v = consultar(l,i);
+        cout<<setw(20)<<v.apelido<<setw(10)<<v.tempo<<" minutos\n";
+    }
+    cout<<endl;
+}
+
+
+void facil(Tubo T[], Lista& l) {
     int repetir = 1, retorno;
+
     do{
         iniciar_vazias(T);
         distribuir(T);
         mostrar(T);
+
+        timeb inicio_tempo_jogo, fim_tempo_jogo;//teste tempo
+        int total_tempo_jogo; //teste tempo
+        ftime(&inicio_tempo_jogo);//teste tempo
+
         do{
             retorno = jogada(T);
             mostrar(T);
@@ -306,6 +363,15 @@ void facil(Tubo T[]) {
         if(retorno == 0) {
             mostrar(T);
             cout<<"\n P A R A B E N S ! ! !";
+
+            //teste tempo
+            ftime(&fim_tempo_jogo);
+            total_tempo_jogo = 1000.0 * (fim_tempo_jogo.time - inicio_tempo_jogo.time) + (fim_tempo_jogo.millitm -inicio_tempo_jogo.millitm);
+            total_tempo_jogo = total_tempo_jogo / (1000 * 60);
+            cout << "\nVoce gastou " << total_tempo_jogo << " minutos para resolver!!!";
+            gravar_recordes(l, total_tempo_jogo);
+            imprimir_recordes(l);
+
         }
         else {
             cout<<"Nao foi desta vez";
@@ -341,16 +407,22 @@ void dificil(Tubo T[]) {
     cout<<"Fim do JOGO"<<endl;
 }
 
+
 int main() {
     Tubo T[TAM];
+    Lista recordes; //teste tempo
+    
     int opcao;
+
+    init(recordes); //teste tempo
+
     do {
         opcao=menu();
         switch (opcao)
         {
         case 1:
             system("cls");
-            facil(T);
+            facil(T, recordes);// teste tempo
             break;
         
         case 2:
